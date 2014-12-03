@@ -22,7 +22,7 @@ function addCustomer(req, res){
   console.log(soapXML);
   var retVal = sendRequest(soapXML, function(retVal){
     console.log(retVal);
-    if(retVal.code === 200){res.send("Created Cuaromer: " + id + "\n");} else{res.send("Problem creating customer\n" + retVal.body);}
+    if(retVal.code === 200){res.send("Created Customer: " + id + "\n");} else{res.send("Problem creating customer\n" + retVal.body);}
   });
 }
 
