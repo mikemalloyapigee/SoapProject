@@ -13,21 +13,53 @@ schemes:
   - https
 # format of bodies a client can send (Content-Type)
 consumes:
-  - text/xml
+  - application/json
 # format of the responses to the client (Accepts)
 produces:
   - text/plain
 x-a127-config: {}
 x-volos-resources: {}
 paths:
-  /addCustomer/{fname}/{lname}:
+  /addCustomer:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: customer
+    x-volos-authorizations: {}
+    x-volos-apply: {}
+    post:
+      description: Adds a new customer using JSON as its input
+      operationId: addCustomer
+      parameters:
+        - name: fname
+          in: body
+          description: The first name of the customer to add
+          required: true
+          schema:
+            type: string
+        - name: lname
+          in: body
+          description: The last name of the customer to add
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: CustomerResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+    
+  /addCustomer/{fname}/{name}:
     # binds a127 app logic to a route
     x-swagger-router-controller: customer
     x-volos-authorizations: {}
     x-volos-apply: {}
     get:
-      description: Returns Adds a customer to the SOAP-based CRM System
-      # used as the method name of the controller
+      description: Adds a new customer using a REST URL
       operationId: addCustomer
       parameters:
         - name: fname
@@ -51,19 +83,21 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+    
+    
   /getCustomer/{id}:
     # binds a127 app logic to a route
     x-swagger-router-controller: customer
     x-volos-authorizations: {}
     x-volos-apply: {}
     get:
-      description: Returns Adds a customer to the SOAP-based CRM System
+      description: Returns a customer from the CRM given a valid id
       # used as the method name of the controller
       operationId: getCustomer
       parameters:
         - name: id
           in: path
-          description: The first name of the customer to add
+          description: The id of the person to find
           required: true
           type: string
       responses:
@@ -77,6 +111,7 @@ paths:
           description: Error
           schema:
             $ref: ErrorResponse
+                    
 # complex objects have schema definitions
 definitions:
   CustomerResponse:

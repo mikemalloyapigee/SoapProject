@@ -5,7 +5,7 @@ var express = require('express');
 var app = express();
 
 // uncomment the following if you need to parse incoming form data
-//app.use(express.bodyParser());
+app.use(express.bodyParser());
 
 app.use(a127.middleware());
 
